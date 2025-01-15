@@ -1,7 +1,7 @@
 <!-- Composition API -->
 
 <script setup>
-	import { ref } from "vue";
+	import { onMounted, ref } from "vue";
 	const name = ref("John Doe");
 	const status = ref("active");
 	const tasks = ref(["task 1", "task 2", "task 3"]);
@@ -27,8 +27,19 @@
 	const deleteTask = (index) => {
 		tasks.value.splice(index, 1);
 	};
+
+	// Lifecycle hook - data fetching
+	onMounted(async () => {
+		try {
+			const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+			const data = await res.json();
+			tasks.value = data.map((task) => task.title);
+		} catch (err) {
+			console.log(err);
+		}
+	});
 </script>
-xs
+
 <template>
 	<h1>Vue Crash Course</h1>
 	<h2>{{ name }}</h2>
