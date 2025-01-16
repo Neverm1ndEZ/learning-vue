@@ -1,7 +1,7 @@
 <script setup>
-	import jobData from "@/job.json";
-	import { ref, defineProps } from "vue";
+	import { ref, defineProps, onMounted } from "vue";
 	import JobListing from "./JobListing.vue";
+	import axios from "axios";
 
 	defineProps({
 		limit: Number,
@@ -11,8 +11,12 @@
 		},
 	});
 
-	const jobs = ref(jobData);
-	console.log(jobs.value);
+	const jobs = ref([]);
+
+	onMounted(async () => {
+		const response = await axios.get(`${import.meta.env.VITE_API_URL}/jobs`);
+		jobs.value = response.data;
+	});
 </script>
 
 <template>
